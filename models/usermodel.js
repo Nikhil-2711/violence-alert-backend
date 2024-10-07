@@ -35,6 +35,12 @@ const userschema=new mongoose.Schema({
     pannumber:{
         type:String,
         unique:true
+    },
+    latitude:{
+        type:String
+    },
+    longitude:{
+        type:String
     }
 })
 

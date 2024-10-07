@@ -4,7 +4,6 @@ const dotenv=require('dotenv')
 const cors=require('cors')
 const port=4000
 const routes=require('./routes/routes')
-
 dotenv.config()
 const app=express()
 app.use(cors())
