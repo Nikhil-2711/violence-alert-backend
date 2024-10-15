@@ -20,7 +20,8 @@ const userschema=new mongoose.Schema({
         type:String
     },
     mobilenumber:{
-        type:Number
+        type:Number,
+        unique:true
     },
     occupation:{
         type:String

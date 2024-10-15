@@ -63,6 +63,7 @@ class userService{
 
           // Return token and success message
           return {
+            is_saviour:login_info.saviour,
             message: "User successfully logged in",
             token: token,
           };
@@ -83,6 +84,25 @@ class userService{
             }
         );
         return updatedUser
+    }
+    async fetchEmergencyContact(){
+      const data=await usermodel.find({saviour:true})
+      return data
+    }
+    async fetchByMobileNumber(mobilenumber){
+      const data=await usermodel.findOne({mobilenumber:mobilenumber})
+      return data
+    }
+    async updateByMobile(mobilenumber,editedData){
+      const res=await usermodel.updateOne(
+        {mobilenumber:mobilenumber},
+        {
+          $set:{
+            ...editedData
+          }
+        }
+      )
+      return res
     }
 }
 
