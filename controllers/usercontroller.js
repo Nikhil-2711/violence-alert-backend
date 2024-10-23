@@ -1,10 +1,10 @@
 const userService=require('../services/userservice')
-const admin = require('firebase-admin');
-const serviceAccount = require('../firebase/alert-project-f1be4-firebase-adminsdk-lv0ot-08136b6f15.json');
+// const admin = require('firebase-admin');
+// const serviceAccount = require('../firebase/alert-project-f1be4-firebase-adminsdk-lv0ot-08136b6f15.json');
 const multer = require('multer');
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount)
-  });
+// admin.initializeApp({
+//     credential: admin.credential.cert(serviceAccount)
+//   });
 
   
 
@@ -231,7 +231,7 @@ class userController{
       }; 
     
       try {
-        const response = await admin.messaging().send(message);
+        // const response = await admin.messaging().send(message);
         res.status(200).send({ "status": true, message: 'Notification sent successfully!', data:response });
       } catch (error) {
         res.status(500).send({ "status": false, message: 'Error sending notification', error });
