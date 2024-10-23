@@ -2,8 +2,26 @@ const express=require('express')
 const routes=express.Router()
 const usercontroller=require('../controllers/usercontroller')
 const missioncontroller=require('../controllers/mission_controller')
+const multer = require('multer');
 
-routes.post('/register',usercontroller.add_user)
+// Configure Multer to store uploaded files in the `uploads` directory
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // Directory to save files
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + '-' + file.originalname) // Save files with unique names
+  }
+});
+
+const upload = multer({ storage: storage }); // Initialize multer
+
+routes.post('/store-basic-information',upload.single('profilephoto'),usercontroller.store_basic_information)
+routes.post('/register', upload.fields([
+    { name: 'info[aadhaar_document]', maxCount: 1 },
+    { name: 'info[pan_document]', maxCount: 1 }
+  ]), usercontroller.add_user);
+routes.post('/login-with-google',usercontroller.login_with_google)
 routes.post('/login',usercontroller.login_user)
 routes.post('/update-location',usercontroller.updateLocation)
 routes.post('/verify-otp',usercontroller.verifyOTP)

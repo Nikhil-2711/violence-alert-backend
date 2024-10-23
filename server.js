@@ -4,12 +4,17 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const http = require('http');
 const socketIo = require('socket.io');
+const bodyParser=require('body-parser')
 
 const port = 4000;
+
 const routes = require('./routes/routes');
 dotenv.config();
 const app = express();
 app.use(cors());
+// Increase the size limit for JSON payloads
+app.use(bodyParser.json({ limit: '100mb' })); // Increase this value based on your needs
+app.use(bodyParser.urlencoded({ extended: true, limit: '100mb' })); // This allows larger URL-encoded requests as well
 
 // Create HTTP server and socket.io
 const server = http.createServer(app);

@@ -5,7 +5,12 @@ const JWT_SECRET = 'your_jwt_secret_key';
 
 class userService{
 
-    async addUser(data){
+    async storeBasicInformation(data){
+      
+      const response=await usermodel(data)
+      return response.save()
+    }
+    async addUser(id,data){
        try {
         console.log("Service user data:",data);
 
@@ -13,8 +18,8 @@ class userService{
         const hashed_password=await bcrypt.hash(data.password,saltRounds)
         data.password=hashed_password
         
-        const response=await usermodel(data)
-        return response.save()
+        const response=await usermodel.updateOne({_id:id},{$set:{...data}})
+        return response
         
        } catch (error) {
         console.log("Error service:",error);
@@ -72,6 +77,43 @@ class userService{
                 "message": "Please enter correct credentials"
             };
         }
+    }
+
+    async loginWithGoogle(data){
+      const login_info = await usermodel.findOne({
+        email: data.email,
+        social_id: data.social_id
+      });
+
+      if (!login_info) {
+        return {
+            "message": "User not found. Please register first."
+        };
+      }
+      if(data.email==login_info.email && data.social_id==login_info.social_id){
+        const token = jwt.sign(
+          {
+            mobilenumber: login_info.mobilenumber,
+            email: login_info.email,
+            social_id:login_info.social_id,
+            latitude:data.latitude,
+            longitude:data.longitude
+          },
+          JWT_SECRET,
+          { expiresIn: "1h" }
+        );
+        return {
+          is_saviour:login_info.saviour,
+          message: "User successfully logged in",
+          token: token,
+        };
+      }else{
+        return {
+          "message": "Please enter correct credentials"
+      };
+      }
+
+
     }
     async update_location(data){
         const updatedUser = await usermodel.updateOne(

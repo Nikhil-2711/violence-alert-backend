@@ -29,18 +29,37 @@ const userschema=new mongoose.Schema({
     password:{
         type:String
     },
-    adharnumber:{
-        type:String,
-        unique:true
+    adharnumber: {
+        type: String,
+        unique: true,
+        sparse: true,  
+        default: null 
     },
-    pannumber:{
-        type:String,
-        unique:true
+    pannumber: {
+        type: String,
+        unique: true,
+        sparse: true,
+        default: null
     },
     latitude:{
         type:String
     },
     longitude:{
+        type:String
+    },
+    social_id:{
+        type:String
+    },
+    first_name:{
+        type:String
+    },
+    last_name:{
+        type:String
+    },
+    aadhaar_document:{
+        type:String
+    },
+    pan_document:{
         type:String
     }
 })
